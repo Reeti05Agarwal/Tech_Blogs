@@ -1,6 +1,5 @@
 ---
-title: Welcome to Quartz
+title: Tech Blogs
 ---
-
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+By: Reeti Agarwal
+Linkedin: https://www.linkedin.com/in/reeti-agarwal-cyber/
