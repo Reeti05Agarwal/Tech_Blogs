@@ -3,6 +3,7 @@ title: N8N Local Setup
 tags:
   - AIML
   - workflows
+draft: true
 ---
 
 ## 1. Render
