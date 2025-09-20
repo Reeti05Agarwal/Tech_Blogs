@@ -5,199 +5,152 @@ tags:
   - networking
   - mysql
   - cyber-security
+  - swing
 draft: false
 ---
-## Introduction
+# Rule-Based Network Intrusion Detection System (NIDS)
 
-With the rise of advanced cyber threats such as **DDoS, malware, brute force attacks, and data exfiltration**, traditional monitoring tools often fail to provide **real-time detection and deep traffic insights**.  
-This project bridges that gap by offering:
+## About the Project
 
-- Real-time **packet capture and analysis**
-- **Database-driven traffic storage** using MySQL
-- **Interactive visualization** with JavaFX
-- **Automated alerts & reporting** for anomalies
----
+The **Rule-Based NIDS** is a high-performance **network intrusion detection system** designed to strengthen enterprise security posture. It detects and prevents known attacks using a predefined set of **rules and signatures**, ensuring **fast and reliable** threat identification.
 
-## Problem Statement
+This system integrates with a **MySQL database** that efficiently organizes large-scale packet datasets, alerts, and incident reports. Real-time analysis of traffic across all layers of the network — from packet metadata to transport details — ensures rapid detection with **low false positives**.
 
-Modern networks face challenges like:
-
-- Increasing cyber threats & attack sophistication
-- Lack of real-time visualization in legacy tools
-- Expensive and complex commercial IDS solutions
-
-***Our solution:***  
-A **Java-based Network Traffic Analysis & Visualization Tool** that provides a **cost-effective, user-friendly, and intelligent** way for IT admins and cybersecurity professionals to:
-
-- Monitor live traffic
-- Detect suspicious patterns
-- Store & analyze historical logs
-- Generate forensic reports
+The project also provides **automated logging, alerting, and reporting**, making it scalable and adaptable for integration into enterprise security infrastructures.
 
 ---
 
-## System Architecture
+## Features
 
-### **1. Data Collection Layer**
-
-- **Packet Sniffer (Pcap4J)** → Captures live packets
-- **Network Interface Monitor** → Detects active interfaces
-- **Raw Packet Storage** → Temporary buffer for captured traffic
-
-### **2. Data Processing Layer**
-
-- **Packet Parser** → Extracts metadata
-- **Traffic Categorizer** → Identifies protocols (TCP, UDP, HTTP, etc.)
-- **Anomaly Detection Engine** → Detects DDoS, malware, brute force, port scanning, data exfiltration
-- **Firewall & Blacklist Validator** → Matches against IP blocklists
-
-### **3. Data Storage Layer**
-
-- **MySQL Database** → Stores traffic metadata, alerts, logs
-- **Firewall Rules DB** → Security rules & blacklists
-- **Activity Logs** → User/system interaction history
-
-### **4. Visualization & Reporting Layer**
-
-- **JavaFX Dashboard** → Interactive real-time monitoring
-- **Graphs & Charts** → Protocol distribution, bandwidth usage
-- **Alerting System** → Real-time anomaly notifications
-- **Report Generator** → Exports CSV/PDF summaries
+*  **Rule-based detection** of known network threats (DDoS, brute force, insider threats, etc.)
+*  **MySQL-backed storage** for packets, alerts, incidents, and users
+*  **User management** (create, update, delete, change roles)
+*  **Alert generation** for suspicious activity
+*  **Triggers and stored procedures** for automatic detection of anomalies
+*  **Logging and reporting** for audits and investigations
+*  **Swing-based UI** for management and monitoring
+*  **Extensible architecture** for future anomaly-based or AI-powered detection
 
 ---
 
-## Functional Requirements
+## Tech Stack
 
-- **User Authentication** (Admin, Analyst, Viewer roles)
-- **Packet Capture & Storage** with filtering options
-- **Anomaly Detection** (DDoS, brute force, port scans, data exfiltration, malware traffic)
-- **Database Management** (historical queries, log retrieval)
-- **Real-Time Alerts & Notifications**
-- **Custom Reports Export** (CSV, PDF)
-- **Interactive Visualization** (graphs, pie charts, tables)
+* **Programming Language:** Java (Swing for UI)
+* **Database:** MySQL
+* **Backend Services:** Stored Procedures, Functions, Triggers
+* **Authentication:** Password hashing, JWT, OAuth2, API tokens
+* **Security Features:**
+
+  * Login rate limiting
+  * Secure credential storage
+  * Session/token expiration
+* **Other Utilities:** JSON parsing, regex filtering, log formatting, IP range checks
+
+---
+
+## Project Structure
+
+```
+Rule-Based-NIDS/
+│
+├── src/main/resources/
+│   ├── schema.sql                # Database schema
+│   ├── ui/                       # UI (HTML, CSS, JS, Swing)
+│
+├── src/main/java/com/network/security/
+│   ├── auth/                     # Authentication logic (login, tokens, hashing)
+│   ├── controller/               # REST APIs or UI event handlers
+│   ├── dao/                      # DAO layer (MySQL interaction for packets, alerts, users, rules)
+│   ├── entity/                   # POJOs mapping to MySQL tables
+│   ├── services/                 # Intrusion detection, classification, alerts, threshold mgmt
+│   ├── util/                     # Helper functions (JSON parsing, regex, IP range checks)
+│
+└── README.md
+```
 
 ---
 
 ## Database Design
 
-Key Entities & Attributes:
+### Key Tables
 
-- **Users** → Authentication & roles
-- **Packets** → Traffic metadata (IP, port, protocol, size)
-- **Protocols** → Protocol type & description
-- **Anomalies** → Detected attacks with details
-- **Devices** → Network devices metadata
-- **Logs & Reports** → User/system activity and generated reports
+* **Users** → Stores user credentials, roles, and access levels
+* **Packet Data Tables** → Holds metadata for captured packets
+* **Alerts** → Stores alerts generated by detection mechanisms
+* **Rules Tables** → Holds predefined rules (DDoS thresholds, brute force attempts, insider threats, etc.)
+* **Blacklist Tables** → Stores blacklisted domains and ports
 
----
+### Example Functions & Procedures
 
-## Relational Schema
+* **Functions**
 
-```bash
-Users(User_ID, Email, Hashed_Password);   Activity_Logs(Log_ID, User_ID, Timestamp, Action);   Reports(Report_ID, User_ID, Report_Data, Timestamp);   Protocol(Protocol_ID, Protocol_Name, Description);   Packets(Packet_ID, Protocol_ID, Device_ID, Source_IP, Dest_IP, Packet_Size, Payload, Timestamp, Source_Port, Dest_Port);   Latency_Logs(Latency_ID, Source_IP, Dest_IP, Latency_ms, Timestamp);   AI_Anomaly_Detection(Anomaly_ID, Packet_ID, Timestamp, Category, Detection_confidence);   DDoS_Attack(Anomaly_ID, DDoS_Type, Target_IP, Attempt_Count, Request_Rate);   Brute_Force_Attack(Anomaly_ID, Target_username, Request_Rate);   Data_Exfiltration(Anomaly_ID, Source_IP, Attacker_IP);   Port_Scanning(Anomaly_ID, Open_Ports_detected);   Blacklisted_IPs(Anomaly_ID, IP_Address, Reason);   Malware_Traffic(Anomaly_ID, Malware_Name, Malicious_IP, File_Hash);   Network_Devices(Device_ID, Device_Name, Device_Type, Mac_Address, IP_Address, Location);   Bandwidth_Usage(Bandwidth_ID, Download_Speed, Upload_Speed, Timestamp, Device_ID);
-```
+  * `validate_packet_length(packet_size)` → Detects anomalies in packet size
+  * `validate_packet(packet_data)` → Detects malformed packets
 
----
+* **Stored Procedures**
 
-## 🔮 Future Enhancements
+  * `sp_add_user()` / `sp_update_user()` / `sp_delete_user()` / `sp_change_user_role()`
+  * `check_ddos_attack()` → Detects DDoS by comparing packet count against threshold
+  * `detect_brute_force_attack()` → Detects repeated failed logins
+  * `detect_insider_threat()` → Detects excessive or suspicious access patterns
 
-- Integration with **SIEM tools** for enterprise-scale monitoring
-- Advanced **AI/ML models** for adaptive anomaly detection
-- **Cloud-based dashboard** for distributed networks
-- Integration with **threat intelligence feeds**
+* **Triggers**
 
----
-
-## Installation & Setup
-
-### **Prerequisites**
-
-- Java 17+
-- MySQL 8.0+
-- Pcap4J library
-- JavaFX SDK
-
-### **Steps**
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/your-username/nids-project.git cd nids-project
-```
-
-2. Import MySQL schema:    
-
-```bash
-mysql -u root -p < schema.sql
-```
-
-3. Configure database connection in `config.properties`.
-4. Build and run the project:    
-
-```bash
-mvn clean install java -jar target/nids.jar
-```
-
----
-## Usage
-
-- **Admin Login** → Manage users, rules, reports
-- **Analyst Login** → Monitor traffic, review alerts
-- **Viewer Login** → Read-only access to logs and visualizations
-- **Dashboard** → Real-time packet graphs, anomaly alerts, bandwidth monitoring
-- **Reports** → Export traffic analysis in PDF/CSV formats
-
-A **Java + MySQL based real-time Network Intrusion Detection System (NIDS)** with interactive **JavaFX dashboard**.  
-Captures live packets, stores them in a relational database, detects anomalies, and generates alerts & forensic reports.
+  * `block_blacklisted_ports` → Prevents packets on blacklisted ports
+  * `block_blacklisted_domains` → Flags access to malicious domains
+  * `detect_suspicious_user_agents` → Detects malicious user agents
 
 ---
 
-## 🚀 Features
+## Intrusion Detection Capabilities
 
-- Real-time **Packet Capture & Parsing** (Pcap4J)
--  **Database-Driven Storage** (MySQL)
-- **Anomaly Detection** (DDoS, malware, brute force, port scanning, data exfiltration)
-- **Interactive Dashboard** (JavaFX) with graphs, charts, alerts
-- **Role-based Authentication** (Admin, Analyst, Viewer)
-- **Reports Export** (CSV, PDF, JSON)
+* **Denial of Service (DoS/DDoS)** detection
+* **Brute force attack** detection
+* **Deep Packet Inspection (DPI)** for suspicious headers
+* **Port scanning** activity monitoring
+* **Insider threat detection** (e.g., abnormal file access)
+* **Packet sniffing & parsing** for real-time monitoring
 
 ---
 
-## ⚡ Installation & Setup
+## Network Protocol Coverage
+
+The system analyzes packets across all OSI layers:
+
+* **Data Link Layer:** Ethernet, Wi-Fi headers
+* **Network Layer:** IPv4, IPv6 headers
+* **Transport Layer:** TCP, UDP headers
+* **Application Layer:** HTTP/HTTPS, DNS, TLS/SSL headers
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- Java 17+
-- MySQL 8.0+
-- Pcap4J library
-- JavaFX SDK
+* **Java 11+**
+* **MySQL 8.0+**
+* **Maven/Gradle** for dependency management
 
-### Steps
+### Setup Instructions
 
-**Clone Repo:** 
-```bash
-git clone https://github.com/your-username/nids-project.git 
-cd nids-project  
-```
+1. Clone the repository:
 
-**Setup MySQL:** 
-```bash
-mysql -u root -p < schema.sql  
-```
+   ```bash
+   git clone https://github.com/your-username/Rule-Based-NIDS.git
+   ```
+2. Create the database using the schema file:
 
-**Configure DB** in `config.properties`  
+   ```sql
+   source src/main/resources/schema.sql;
+   ```
+3. Configure database credentials in `application.properties` (or config file).
+4. Build and run the project:
 
-**Build & run:** 
-```bash
-mvn clean install java -jar target/nids.jar
-```
-
----
-## 📊 Dashboard Preview
-
-- **Live Traffic Graphs** (line chart of bandwidth, protocol pie chart)
-- **Anomaly Alerts** (highlight suspicious traffic in real time)
-- **Reports** (download logs in PDF/CSV)
-
----
+   ```bash
+   mvn clean install
+   java -jar target/rule-based-nids.jar
+   ```
+5. Launch the **Swing UI** or access via REST APIs for monitoring.
+ 
  
