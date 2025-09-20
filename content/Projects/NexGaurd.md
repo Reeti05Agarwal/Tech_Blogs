@@ -1,8 +1,9 @@
 ---
-title: AI-Powered Cybersecurity Assistant
+title: NexGaurd
 tags:
   - AIML
   - cyber-security
   - local-models
-draft: true
+draft: false
 ---
+ 
