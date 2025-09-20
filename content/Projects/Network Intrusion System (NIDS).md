@@ -5,7 +5,7 @@ tags:
   - networking
   - mysql
   - cyber-security
-draft: true
+draft: false
 ---
 ## Introduction
 
@@ -99,19 +99,6 @@ Users(User_ID, Email, Hashed_Password);   Activity_Logs(Log_ID, User_ID, Timesta
 
 ---
 
-## Application of Codd’s Rules
-
-- ✅ Information Rule → All data stored in tables (MySQL)
-- ✅ Guaranteed Access Rule → Queryable via table, PK, attribute
-- ✅ Systematic NULL Handling → Proper NULL semantics maintained
-- ✅ Comprehensive Sub-Language Rule → SQL supported for DDL/DML
-- ✅ Physical Data Independence → Application unaffected by storage changes
-- ❌ Logical Data Independence → Schema changes may affect app
-- ❌ View Updating Rule → Limited support in MySQL
-- ❌ Distribution Independence → Not fully supported by MySQL
-
----
-
 ## 🔮 Future Enhancements
 
 - Integration with **SIEM tools** for enterprise-scale monitoring
@@ -151,10 +138,7 @@ mysql -u root -p < schema.sql
 mvn clean install java -jar target/nids.jar
 ```
 
-
-
 ---
-
 ## Usage
 
 - **Admin Login** → Manage users, rules, reports
@@ -163,8 +147,6 @@ mvn clean install java -jar target/nids.jar
 - **Dashboard** → Real-time packet graphs, anomaly alerts, bandwidth monitoring
 - **Reports** → Export traffic analysis in PDF/CSV formats
 
-
-
 A **Java + MySQL based real-time Network Intrusion Detection System (NIDS)** with interactive **JavaFX dashboard**.  
 Captures live packets, stores them in a relational database, detects anomalies, and generates alerts & forensic reports.
 
@@ -172,24 +154,12 @@ Captures live packets, stores them in a relational database, detects anomalies, 
 
 ## 🚀 Features
 
-- ✅ Real-time **Packet Capture & Parsing** (Pcap4J)
-    
-- ✅ **Database-Driven Storage** (MySQL)
-    
-- ✅ **Anomaly Detection** (DDoS, malware, brute force, port scanning, data exfiltration)
-    
-- ✅ **Interactive Dashboard** (JavaFX) with graphs, charts, alerts
-    
-- ✅ **Role-based Authentication** (Admin, Analyst, Viewer)
-    
-- ✅ **Reports Export** (CSV, PDF, JSON)
-    
-
----
-
-## 📂 Project Structure
-
-`/src   /capture       → Packet sniffing and parsing   /db            → Database handlers (MySQL)   /ui            → JavaFX dashboard   /anomaly       → Anomaly detection modules   /reporting     → Report generation utilities /schema.sql      → MySQL database schema /config.properties → Database configuration`
+- Real-time **Packet Capture & Parsing** (Pcap4J)
+-  **Database-Driven Storage** (MySQL)
+- **Anomaly Detection** (DDoS, malware, brute force, port scanning, data exfiltration)
+- **Interactive Dashboard** (JavaFX) with graphs, charts, alerts
+- **Role-based Authentication** (Admin, Analyst, Viewer)
+- **Reports Export** (CSV, PDF, JSON)
 
 ---
 
@@ -198,50 +168,36 @@ Captures live packets, stores them in a relational database, detects anomalies, 
 ### Prerequisites
 
 - Java 17+
-    
 - MySQL 8.0+
-    
 - Pcap4J library
-    
 - JavaFX SDK
-    
 
 ### Steps
 
-`# Clone repo git clone https://github.com/your-username/nids-project.git cd nids-project  # Setup MySQL mysql -u root -p < schema.sql  # Configure DB in config.properties  # Build & run mvn clean install java -jar target/nids.jar`
+**Clone Repo:** 
+```bash
+git clone https://github.com/your-username/nids-project.git 
+cd nids-project  
+```
+
+**Setup MySQL:** 
+```bash
+mysql -u root -p < schema.sql  
+```
+
+**Configure DB** in `config.properties`  
+
+**Build & run:** 
+```bash
+mvn clean install java -jar target/nids.jar
+```
 
 ---
-
 ## 📊 Dashboard Preview
 
 - **Live Traffic Graphs** (line chart of bandwidth, protocol pie chart)
-    
 - **Anomaly Alerts** (highlight suspicious traffic in real time)
-    
 - **Reports** (download logs in PDF/CSV)
-    
 
 ---
-
-## 🔮 Roadmap
-
--  Integration with **cloud-based SIEM systems**
-    
--  Advanced ML-based anomaly detection
-    
--  Threat intelligence feed integration
-    
--  Dockerized deployment
-    
-
----
-
-## 👨‍💻 Authors
-
-- Reeti Agarwal
-    
-- Ria Vinod
-    
-- Rishika Arora
-    
-- Sanidhya Awasti
+ 

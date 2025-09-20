@@ -1,0 +1,9 @@
+views:
+  - type: table
+    name: Table
+  - type: cards
+    name: Novels
+    filters:
+      and:
+        - file.tags == ["cyber-security"]
+    cardSize: 220
